@@ -1,34 +1,51 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
+import { useState } from 'react'
+import PageOne from './pages/PageOne'
+import PageTwo from './pages/PageTwo'
+import PageThree from './pages/PageThree'
 
 function App(): React.JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
+  const [activePage, setActivePage] = useState<'one' | 'two' | 'three'>('one')
+
+  const renderPage = (): React.JSX.Element => {
+    switch (activePage) {
+      case 'one':
+        return <PageOne />
+      case 'two':
+        return <PageTwo />
+      case 'three':
+        return <PageThree />
+    }
+  }
 
   return (
-    <>
-      <img alt="logo" className="logo" src={electronLogo} />
-      <div className="creator">Powered by electron-vite</div>
-      <div className="text">
-        Build an Electron app with <span className="react">React</span>
-        &nbsp;and <span className="ts">TypeScript</span>
-      </div>
-      <p className="tip">
-        Please try pressing <code>F12</code> to open the devTool
-      </p>
-      <div className="actions">
-        <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
-          </a>
-        </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
-            Send IPC
-          </a>
-        </div>
-      </div>
-      <Versions></Versions>
-    </>
+    <div className="app-layout">
+      <aside className="side-nav">
+        <h1 className="nav-title">Pages</h1>
+        <button
+          className={`nav-item ${activePage === 'one' ? 'active' : ''}`}
+          onClick={() => setActivePage('one')}
+        >
+          One
+        </button>
+        <button
+          className={`nav-item ${activePage === 'two' ? 'active' : ''}`}
+          onClick={() => setActivePage('two')}
+        >
+          Two
+        </button>
+        <button
+          className={`nav-item ${activePage === 'three' ? 'active' : ''}`}
+          onClick={() => setActivePage('three')}
+        >
+          Three
+        </button>
+      </aside>
+
+      <main className="page-content">
+        <h2 className="page-heading">{activePage.toUpperCase()} PAGE</h2>
+        {renderPage()}
+      </main>
+    </div>
   )
 }
 
