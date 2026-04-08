@@ -2,9 +2,10 @@ import { useState } from 'react'
 import PageOne from './pages/PageOne'
 import PageTwo from './pages/PageTwo'
 import PageThree from './pages/PageThree'
+import Notification from './pages/Notification'
 
 function App(): React.JSX.Element {
-  const [activePage, setActivePage] = useState<'one' | 'two' | 'three'>('one')
+  const [activePage, setActivePage] = useState<'one' | 'two' | 'three' | 'notification'>('one')
 
   const renderPage = (): React.JSX.Element => {
     switch (activePage) {
@@ -14,6 +15,8 @@ function App(): React.JSX.Element {
         return <PageTwo />
       case 'three':
         return <PageThree />
+      case 'notification':
+        return <Notification />
     }
   }
 
@@ -38,6 +41,12 @@ function App(): React.JSX.Element {
           onClick={() => setActivePage('three')}
         >
           Three
+        </button>
+        <button
+          className={`nav-item ${activePage === 'notification' ? 'active' : ''}`}
+          onClick={() => setActivePage('notification')}
+        >
+          Notification
         </button>
       </aside>
 
